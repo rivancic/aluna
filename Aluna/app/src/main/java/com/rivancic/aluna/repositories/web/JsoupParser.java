@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * TODO Replace usage of Log with Timber so we can test core classes with Unit test.
  * Created by rivancic on 12/07/16.
  */
 public class JsoupParser {
