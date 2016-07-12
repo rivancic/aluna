@@ -15,7 +15,7 @@ import android.view.MenuItem;
 
 import com.rivancic.aluna.R;
 import com.rivancic.aluna.repositories.AlunaRepository;
-import com.rivancic.aluna.repositories.AlunaWebRepository;
+import com.rivancic.aluna.repositories.web.AlunaWebRepository;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
