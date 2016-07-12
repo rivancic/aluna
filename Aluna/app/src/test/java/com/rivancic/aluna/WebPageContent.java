@@ -4,8 +4,9 @@ package com.rivancic.aluna;
  * Created by rivancic on 12/07/16.
  */
 public class WebPageContent {
+
     /**
-     * Static content of the rendered web page that is parsed for images.
+     * Static content of the rendered web page that is parsed for main images.
      */
     static final String MAIN_PAGE_CONTENT = "<!DOCTYPE html>\n" +
             "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en-US\"\n" +

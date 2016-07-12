@@ -1,7 +1,5 @@
 package com.rivancic.aluna.repositories.web;
 
-import android.util.Log;
-
 import com.rivancic.aluna.models.Image;
 import com.rivancic.aluna.repositories.AlunaRepository;
 
@@ -10,6 +8,8 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by rivancic on 11/07/16.
@@ -32,7 +32,7 @@ public class AlunaWebRepository implements AlunaRepository {
             public void run() {
                 Document doc;
                 try {
-                    Log.i(TAG, WEB_SITE);
+                    Timber.i(WEB_SITE);
                     doc = Jsoup.connect(WEB_SITE).get();
                     if (doc != null) {
                         List<Image> mainImages = jsoupParser.parseMainImagesResult(doc);
@@ -53,10 +53,10 @@ public class AlunaWebRepository implements AlunaRepository {
     private void returnMainImagesResult(List<Image> mainImages) {
 
         // Just to test that we properly parsed the images
-        Log.i(TAG, "Main images: ");
+        Timber.i("Main images: ");
         for (Image image :
                 mainImages) {
-            Log.i(TAG, image.toString());
+            Timber.i(image.toString());
         }
     }
 }

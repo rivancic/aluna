@@ -24,8 +24,8 @@ public class JsoupParserUnitTest {
         Document parse = Jsoup.parse(WebPageContent.MAIN_PAGE_CONTENT);
         List<Image> images = jsoupParser.parseMainImagesResult(parse);
         assertNotNull("List of images should not be null", images);
-        assertEquals("List of images should have X items", images.size(), 10);
-        assertEquals("First image url is not matching", images.get(0), "");
-        assertEquals("First image url is not matching", images.get(9).getUrl(), "");
+        assertEquals("List of images should have 12 items", images.size(), 12);
+        assertEquals("First image url is not matching", images.get(0).getUrl(), "http://alunaweddings.com/wp-content/uploads/2016/01/avp4374-1000x500.jpg");
+        assertEquals("First image url is not matching", images.get(11).getUrl(), "http://alunaweddings.com/wp-content/uploads/2016/01/avp6893-1000x500.jpg");
     }
 }
