@@ -13,8 +13,12 @@
     tools:context=".activities.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+   <!-- Add Carousel -->
+   <com.mxn.soul.slidingcard_core.ContainerView
+       android:id="@+id/main_image_slider"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       app:card_item_height = "230dp"
+       app:card_item_margin = "10dp"/>
+
 </RelativeLayout>

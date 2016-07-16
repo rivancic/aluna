@@ -1,9 +1,6 @@
 package com.rivancic.aluna.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,13 +9,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.mxn.soul.slidingcard_core.ContainerView;
+import com.mxn.soul.slidingcard_core.SlidingCard;
+import com.rivancic.aluna.AlunaApplication;
 import com.rivancic.aluna.R;
+import com.rivancic.aluna.models.Image;
 import com.rivancic.aluna.repositories.AlunaRepository;
-import com.rivancic.aluna.repositories.web.AlunaWebRepository;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private AlunaApplication application;
+    private AlunaRepository alunaRepository;
+    private Bus bus;
+    private OnMainImageResponseReceivedListener onMainImageResponseReceived;
+    private ContainerView mainSlider;
 
     @Override
     public void onBackPressed() {
@@ -83,30 +98,93 @@ public class MainActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Toolbar toolbar = initializeToolbar();
+        initializeMainFunctionality();
+        initializeNavigationView(toolbar);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                AlunaRepository alunaRepository = new AlunaWebRepository();
-                alunaRepository.getMainPictures();
-
-
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    private void initializeNavigationView(Toolbar toolbar) {
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void initializeMainFunctionality() {
+
+        application = (AlunaApplication) getApplication();
+        bus = application.getBus();
+        alunaRepository = application.getAlunaRepository();
+        onMainImageResponseReceived = new OnMainImageResponseReceivedListener();
+        mainSlider = (ContainerView) findViewById(R.id.main_image_slider);
+    }
+
+    private Toolbar initializeToolbar() {
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        return toolbar;
+    }
+
+    class MainSliderContainer implements ContainerView.ContainerInterface {
+
+        private List<Image> images;
+
+        public MainSliderContainer(List<Image> images) {
+
+            this.images = images;
+        }
+
+        @Override
+        public void initCard(SlidingCard card, int index) {
+
+
+            ImageView sliderIv = (ImageView) card.findViewById(R.id.main_image_slider_iv);
+            Image image = images.get(index);
+            Glide.with(MainActivity.this).load(image.getUrl()).into(sliderIv);
+        }
+
+        @Override
+        public void exChangeCard() {
+
+            Image item = images.get(0);
+            images.remove(0);
+            images.add(item);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        bus.register(onMainImageResponseReceived);
+        alunaRepository.getMainPictures();
+    }
+
+    @Override
+    protected void onStop() {
+
+        super.onStop();
+        bus.unregister(onMainImageResponseReceived);
+    }
+
+    /**
+     * Display images in image slider
+     */
+    class OnMainImageResponseReceivedListener {
+
+        @Subscribe
+        public void getMainImages(ArrayList<Image> mainImages) {
+
+
+            Timber.i("Main images handled in main activity.");
+            mainSlider.initCardView(new MainSliderContainer(mainImages),
+                    R.layout.main_image_slider_item,
+                    R.id.sliding_card_content_view);
+        }
     }
 }
