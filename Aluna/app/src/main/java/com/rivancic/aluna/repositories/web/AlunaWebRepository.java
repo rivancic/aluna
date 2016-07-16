@@ -1,7 +1,11 @@
 package com.rivancic.aluna.repositories.web;
 
+import android.content.Context;
+import android.os.Handler;
+
 import com.rivancic.aluna.models.Image;
 import com.rivancic.aluna.repositories.AlunaRepository;
+import com.squareup.otto.Bus;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,6 +25,14 @@ public class AlunaWebRepository implements AlunaRepository {
     // TODO extract to properties file
     private static final String WEB_SITE = "http://alunaweddings.com/en/";
     private JsoupParser jsoupParser = new JsoupParser();
+    private Bus bus;
+    private Context context;
+
+    public AlunaWebRepository(Bus bus, Context context) {
+
+        this.bus = bus;
+        this.context = context;
+    }
 
     /**
      * Parse a list of images from the main page and convert them in List of {@link com.rivancic.aluna.models.Image}s.
@@ -47,16 +59,29 @@ public class AlunaWebRepository implements AlunaRepository {
     }
 
     /**
-     * TODO Use some method to push results back to caller
-     * @param mainImages
+     * Send response through Otto bus.
+     * @param mainImages list of images on the main page.
      */
-    private void returnMainImagesResult(List<Image> mainImages) {
+    private void returnMainImagesResult(final List<Image> mainImages) {
 
-        // Just to test that we properly parsed the images
+        // Log response
         Timber.i("Main images: ");
         for (Image image :
                 mainImages) {
             Timber.i(image.toString());
         }
+
+        // TODO refactor that
+        // Get a handler that can be used to post to the main thread
+        Handler mainHandler = new Handler(context.getMainLooper());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+                bus.post(mainImages);
+            }
+        };
+        mainHandler.post(myRunnable);
     }
 }
