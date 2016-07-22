@@ -7,4 +7,6 @@ package com.rivancic.aluna.repositories;
 public interface AlunaRepository {
 
     void getMainPictures();
+
+    void getAboutUsImage();
 }

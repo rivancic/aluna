@@ -3,6 +3,7 @@ package com.rivancic.aluna.repositories.web;
 import android.content.Context;
 import android.os.Handler;
 
+import com.rivancic.aluna.R;
 import com.rivancic.aluna.models.Image;
 import com.rivancic.aluna.repositories.AlunaRepository;
 import com.squareup.otto.Bus;
@@ -21,9 +22,10 @@ import timber.log.Timber;
 public class AlunaWebRepository implements AlunaRepository {
 
     private static final String TAG = "AlunaWebRepository";
+    private static final String ABOUT_US = "o-nama/";
 
     // TODO extract to properties file
-    private static final String WEB_SITE = "http://alunaweddings.com/en/";
+    private static String webSite;
     private JsoupParser jsoupParser = new JsoupParser();
     private Bus bus;
     private Context context;
@@ -32,6 +34,7 @@ public class AlunaWebRepository implements AlunaRepository {
 
         this.bus = bus;
         this.context = context;
+        webSite = context.getString(R.string.host);
     }
 
     /**
@@ -44,11 +47,33 @@ public class AlunaWebRepository implements AlunaRepository {
             public void run() {
                 Document doc;
                 try {
-                    Timber.i(WEB_SITE);
-                    doc = Jsoup.connect(WEB_SITE).get();
+                    Timber.i(webSite);
+                    doc = Jsoup.connect(webSite).get();
                     if (doc != null) {
                         List<Image> mainImages = jsoupParser.parseMainImagesResult(doc);
+
                         returnMainImagesResult(mainImages);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        downloadThread.start();
+    }
+
+    @Override
+    public void getAboutUsImage() {
+
+        Thread downloadThread = new Thread() {
+            public void run() {
+                Document doc;
+                try {
+                    Timber.i(webSite + ABOUT_US);
+                    doc = Jsoup.connect(webSite + ABOUT_US).get();
+                    if (doc != null) {
+                        Image aboutUsImage = jsoupParser.parseAboutUsImageResult(doc);
+                        //returnMainImagesResult(aboutUsImage);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -84,4 +109,6 @@ public class AlunaWebRepository implements AlunaRepository {
         };
         mainHandler.post(myRunnable);
     }
+
+
 }
