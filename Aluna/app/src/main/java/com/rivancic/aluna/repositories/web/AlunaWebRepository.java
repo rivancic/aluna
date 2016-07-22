@@ -73,7 +73,7 @@ public class AlunaWebRepository implements AlunaRepository {
                     doc = Jsoup.connect(webSite + ABOUT_US).get();
                     if (doc != null) {
                         Image aboutUsImage = jsoupParser.parseAboutUsImageResult(doc);
-                        //returnMainImagesResult(aboutUsImage);
+                        returnAboutUsImageResult(aboutUsImage);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -110,5 +110,27 @@ public class AlunaWebRepository implements AlunaRepository {
         mainHandler.post(myRunnable);
     }
 
+    /**
+     * Send response through Otto bus.
+     * @param aboutUsImage image representing about us page.
+     */
+    private void returnAboutUsImageResult(final Image aboutUsImage) {
+
+        // Log response
+        Timber.i("About us image: %s", aboutUsImage.toString());
+
+        // TODO refactor that
+        // Get a handler that can be used to post to the main thread
+        Handler mainHandler = new Handler(context.getMainLooper());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+                bus.post(aboutUsImage);
+            }
+        };
+        mainHandler.post(myRunnable);
+    }
 
 }
