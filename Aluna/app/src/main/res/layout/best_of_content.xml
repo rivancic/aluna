@@ -10,15 +10,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.MainActivity"
-    tools:showIn="@layout/main_app_bar">
+    tools:context="com.rivancic.aluna.activities.BestOfActivity"
+    tools:showIn="@layout/best_of_activity">
 
-   <!-- Add Carousel -->
-   <com.mxn.soul.slidingcard_core.ContainerView
-       android:id="@+id/main_image_slider"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       app:card_item_height = "230dp"
-       app:card_item_margin = "10dp"/>
+    <FrameLayout
+        android:id="@android:id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
 </RelativeLayout>

@@ -26,6 +26,11 @@
             android:label="@string/title_activity_about_us"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".activities.BestOfActivity"
+            android:label="@string/title_activity_best_of"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

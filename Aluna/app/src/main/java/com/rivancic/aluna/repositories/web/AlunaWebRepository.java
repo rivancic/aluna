@@ -23,6 +23,7 @@ public class AlunaWebRepository implements AlunaRepository {
 
     private static final String TAG = "AlunaWebRepository";
     private static final String ABOUT_US = "o-nama/";
+    private static final String BEST_OF = "best-of-weddings/";
 
     // TODO extract to properties file
     private static String webSite;
@@ -69,11 +70,34 @@ public class AlunaWebRepository implements AlunaRepository {
             public void run() {
                 Document doc;
                 try {
-                    Timber.i(webSite + ABOUT_US);
-                    doc = Jsoup.connect(webSite + ABOUT_US).get();
+                    String url = webSite + ABOUT_US;
+                    Timber.i(url);
+                    doc = Jsoup.connect(url).get();
                     if (doc != null) {
                         Image aboutUsImage = jsoupParser.parseAboutUsImageResult(doc);
                         returnAboutUsImageResult(aboutUsImage);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        downloadThread.start();
+    }
+
+    @Override
+    public void getBestOfImages() {
+
+        Thread downloadThread = new Thread() {
+            public void run() {
+                Document doc;
+                try {
+                    String url = webSite + BEST_OF;
+                    Timber.i(url);
+                    doc = Jsoup.connect(url).get();
+                    if (doc != null) {
+                        List<Image> mainImages = jsoupParser.parseBestOfImagesResult(doc);
+                        returnMainImagesResult(mainImages);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

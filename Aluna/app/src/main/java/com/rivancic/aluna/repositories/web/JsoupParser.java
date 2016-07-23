@@ -21,6 +21,8 @@ public class JsoupParser {
     private static final String CSS_IMAGE_QUERY = "#content .rsImg";
     private static final String CSS_ABOUT_US_IMAGE_QUERY = ".entry-content.post-content img";
 
+    private static final String CSS_BEST_OF_IMAGE_QUERY = ".post-content img";
+
     /**
      * Get image elements from website content
      */
@@ -40,7 +42,25 @@ public class JsoupParser {
         return mainImages;
     }
 
-    // entry-content post-content
+    /**
+     * Get image elements from website content
+     */
+    public List<Image> parseBestOfImagesResult(Document doc) {
+
+        ArrayList<Image> bestOfImages = new ArrayList<>();
+        Elements htmlImages = doc.select(CSS_BEST_OF_IMAGE_QUERY);
+        Timber.i("Best OfImages: %s", htmlImages.toString());
+        String href;
+        Image bestOfImage;
+        for (Element image : htmlImages) {
+            href = image.attr("src");
+            Timber.i("Image src: %s", href);
+            bestOfImage = new Image(href);
+            bestOfImages.add(bestOfImage);
+        }
+        return bestOfImages;
+    }
+
     /**
      * Get image elements from website content
      */
