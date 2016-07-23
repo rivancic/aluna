@@ -44,17 +44,16 @@ public class AboutUsActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    protected void onResume() {
 
-        super.onStart();
+        super.onResume();
         bus.register(onAboutUsImageReceivedListener);
-        alunaRepository.getMainPictures();
     }
 
     @Override
-    protected void onStop() {
+    protected void onPause() {
 
-        super.onStop();
+        super.onPause();
         bus.unregister(onAboutUsImageReceivedListener);
     }
 
@@ -64,14 +63,10 @@ public class AboutUsActivity extends AppCompatActivity {
     class OnAboutUsImageReceivedListener {
 
         @Subscribe
-        public void getMainImages(Image aboutUsImage) {
-
+        public void getAboutImage(Image aboutUsImage) {
 
             Timber.i("About us image received in about us activity.");
-            Glide.with(AboutUsActivity.this).load(aboutUsImage.getUrl()).into(aboutUsIv);
-            /*mainSlider.initCardView(new MainSliderContainer(mainImages),
-                    R.layout.main_image_slider_item,
-                    R.id.sliding_card_content_view);*/
+            Glide.with(AboutUsActivity.this).load(aboutUsImage.getUrl()).dontTransform().into(aboutUsIv);
         }
     }
 }
