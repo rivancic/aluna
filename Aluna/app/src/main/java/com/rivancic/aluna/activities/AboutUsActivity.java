@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
+import com.etiennelawlor.imagegallery.library.util.ImageGalleryUtils;
 import com.rivancic.aluna.R;
 import com.rivancic.aluna.models.Image;
 import com.squareup.otto.Subscribe;
@@ -53,7 +55,12 @@ public class AboutUsActivity extends BaseActivity {
         public void getAboutImage(Image aboutUsImage) {
 
             Timber.i("About us image received in about us activity.");
-            Glide.with(AboutUsActivity.this).load(aboutUsImage.getUrl()).dontTransform().into(aboutUsIv);
+            int width = ImageGalleryUtils.getScreenWidth(AboutUsActivity.this);
+            Glide
+                    .with(AboutUsActivity.this)
+                    .load(aboutUsImage.getUrl())
+                    .override(width, Target.SIZE_ORIGINAL)
+                    .dontTransform().into(aboutUsIv);
         }
     }
 }

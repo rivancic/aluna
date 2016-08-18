@@ -46,6 +46,9 @@ public class BaseActivity extends AppCompatActivity
         } else if (id == R.id.best_of) {
             Intent intent = new Intent(this, BestOfActivity.class);
             startActivity(intent);
+        } else if (id == R.id.contact) {
+            Intent intent = new Intent(this, ContactActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

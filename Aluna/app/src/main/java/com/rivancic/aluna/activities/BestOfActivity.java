@@ -2,10 +2,14 @@ package com.rivancic.aluna.activities;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.etiennelawlor.imagegallery.library.ImageGalleryFragment;
+import com.etiennelawlor.imagegallery.library.activities.FullScreenImageGalleryActivity;
 import com.etiennelawlor.imagegallery.library.activities.ImageGalleryActivity;
+import com.etiennelawlor.imagegallery.library.adapters.FullScreenImageGalleryAdapter;
 import com.etiennelawlor.imagegallery.library.adapters.ImageGalleryAdapter;
 import com.rivancic.aluna.R;
 import com.rivancic.aluna.models.Image;
@@ -18,7 +22,7 @@ import timber.log.Timber;
 public class BestOfActivity extends BaseActivity {
 
     private OnMainImageResponseReceivedListener onMainImageResponseReceived;
-    private ImageGalleryFragment fragment;
+    private CustomImageGalleryFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,14 @@ public class BestOfActivity extends BaseActivity {
         initializeMainFunctionality();
 
         getSupportFragmentManager().findFragmentById(android.R.id.content);
+
+        ThumbnailImageLoader thumbnailImageLoader = new ThumbnailImageLoader();
+        FullImageLoader fullImageLoader = new FullImageLoader();
+
+        ImageGalleryActivity.setImageThumbnailLoader(thumbnailImageLoader);
+        CustomImageGalleryFragment.setImageThumbnailLoader(thumbnailImageLoader);
+        FullScreenImageGalleryActivity.setFullScreenImageLoader(fullImageLoader);
+
 
     }
 
@@ -71,11 +83,11 @@ public class BestOfActivity extends BaseActivity {
 
             Timber.i("Best of images handled in best of activity.");
             if (fragment == null) {
-                fragment = ImageGalleryFragment.newInstance(bundle);
-                fragment.setImageThumbnailLoader(new ImageLoader());
+                fragment = CustomImageGalleryFragment.newInstance(bundle);
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(android.R.id.content, fragment, "")
+                        //.replace(android.R.id.content, fragment, "")
+                        .replace(R.id.image_gallery, fragment, "")
                         .commit();
             } else {
                 getSupportFragmentManager()
@@ -86,12 +98,26 @@ public class BestOfActivity extends BaseActivity {
         }
     }
 
-    class ImageLoader implements ImageGalleryAdapter.ImageThumbnailLoader {
+    class ThumbnailImageLoader implements ImageGalleryAdapter.ImageThumbnailLoader {
 
         @Override
         public void loadImageThumbnail(ImageView iv, String imageUrl, int dimension) {
 
             Glide.with(BestOfActivity.this).load(imageUrl).into(iv);
+        }
+    }
+
+    class FullImageLoader implements FullScreenImageGalleryAdapter.FullScreenImageLoader {
+
+        @Override
+        public void loadFullScreenImage(ImageView iv, String imageUrl, int width, LinearLayout bglinearLayout) {
+
+            Glide
+                    .with(iv.getContext())
+                    .load(imageUrl)
+                    .override(width, Target.SIZE_ORIGINAL)
+                    .dontTransform()
+                    .into(iv);
         }
     }
 }

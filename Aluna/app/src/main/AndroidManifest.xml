@@ -31,6 +31,10 @@
             android:label="@string/title_activity_best_of"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name=".activities.ContactActivity"
+                  android:label="@string/contact"
+                  android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
