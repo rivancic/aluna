@@ -19,6 +19,9 @@ import java.util.ArrayList;
 
 import timber.log.Timber;
 
+/**
+ * TODO Make the ActionBar in this activity dark as it shows photos.
+ */
 public class BestOfActivity extends BaseActivity {
 
     private OnMainImageResponseReceivedListener onMainImageResponseReceived;
