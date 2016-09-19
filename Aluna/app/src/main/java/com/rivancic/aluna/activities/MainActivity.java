@@ -15,6 +15,10 @@ import java.util.List;
 
 import timber.log.Timber;
 
+/**
+ * TODO Instead of text Aluna Weddings show Aluna Weddings logo in ActionBar.
+ * TODO fix main images make if keep ratio.
+ */
 public class MainActivity extends BaseActivity {
 
     private OnMainImageResponseReceivedListener onMainImageResponseReceived;
