@@ -30,17 +30,12 @@ public class BestOfActivity extends BaseActivity {
         contentView = R.layout.best_of_activity;
         super.onCreate(savedInstanceState);
         initializeMainFunctionality();
-
         getSupportFragmentManager().findFragmentById(android.R.id.content);
-
         ThumbnailImageLoader thumbnailImageLoader = new ThumbnailImageLoader();
         FullImageLoader fullImageLoader = new FullImageLoader();
-
         ImageGalleryActivity.setImageThumbnailLoader(thumbnailImageLoader);
         CustomImageGalleryFragment.setImageThumbnailLoader(thumbnailImageLoader);
         FullScreenImageGalleryActivity.setFullScreenImageLoader(fullImageLoader);
-
-
     }
 
     private void initializeMainFunctionality() {
