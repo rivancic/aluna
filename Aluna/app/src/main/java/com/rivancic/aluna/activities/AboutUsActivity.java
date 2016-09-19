@@ -12,6 +12,9 @@ import com.squareup.otto.Subscribe;
 
 import timber.log.Timber;
 
+/**
+ * TODO expand image through the whole screen.
+ */
 public class AboutUsActivity extends BaseActivity {
 
     private ImageView aboutUsIv;
