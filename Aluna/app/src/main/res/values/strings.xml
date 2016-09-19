@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Aluna</string>
+    <string name="app_name" translatable="false">Aluna Weddings</string>
 
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
@@ -8,7 +8,10 @@
     <string name="title_activity_about_us">About Us</string>
     <string name="about_us">About Us</string>
     <string name="host">http://alunaweddings.com/en/</string>
-    <string name="best_of">Best of</string>
-    <string name="title_activity_best_of">BestOfActivity</string>
+    <string name="best_of" translatable="false">Best of</string>
+    <string name="title_activity_best_of" translatable="false">Best of</string>
     <string name="contact">Contact</string>
+    <string name="aluna_weddings_mail">alunaweddings@gmail.com</string>
+    <string name="aluna_weddings">Aluna Weddings</string>
+    <string name="aluna_weddings_logo">Aluna Weddings Logo</string>
 </resources>
