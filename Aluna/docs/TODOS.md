@@ -2,6 +2,8 @@
 
 - Properly handle images on first screen they seem skewed now.
 
+- Make the toolbar in Best of dark inverz
+
 - On About us activity nothing is shown on tablet.
 
 
