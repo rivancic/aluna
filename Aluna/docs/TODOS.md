@@ -1,6 +1,21 @@
 # TODO 
 
+- Properly handle images on first screen they seem skewed now.
+
 - On About us activity nothing is shown on tablet.
+
+
+09-21 23:31:28.018 9524-9685/com.rivancic.aluna W/OpenGLRenderer: Bitmap too large to be uploaded into a texture (1000x4756, max=4096x4096)
+
+android:layerType="software"
+http://stackoverflow.com/questions/18471194/webview-in-scrollview-view-too-large-to-fit-into-drawing-cache-how-to-rewor
+
+- Strech image through whole view
+show images in full screen in scrollview android
+
+<ScrollView android:fillViewport="true"
+http://stackoverflow.com/questions/20565291/show-images-in-full-screen-in-scrollview-android
+
 
 - Make AboutUs big as screen
 
@@ -69,6 +84,10 @@
 
 
 - Implement date chooser in contact activity
+
+- Add facebook logo in menu? or somewhere to open up aluna on facebook page.
+
+- Add references?
 
 # App
 - Extract configurations, like website url to configurations..
