@@ -2,6 +2,8 @@
 
 - On About us activity nothing is shown on tablet.
 
+- Make AboutUs big as screen
+
 - Sometimes I get an error:
 
 ```
