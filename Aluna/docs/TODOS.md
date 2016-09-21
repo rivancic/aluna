@@ -4,6 +4,8 @@
 
 - Make the toolbar in Best of dark inverz
 
+- Handle back navigation should not come to the same activity multiple times
+
 - On About us activity nothing is shown on tablet.
 
 
