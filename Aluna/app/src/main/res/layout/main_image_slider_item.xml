@@ -2,18 +2,23 @@
 <RelativeLayout
     android:id="@+id/sliding_card_content_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="500dp"
     android:gravity="center"
-    android:paddingBottom="20dp">
+    tools:background="@color/teal_600"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="500dp"/>
 
     <ImageView
         android:id="@+id/main_image_slider_iv"
-        android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:layout_margin="10dp"
-        android:background="#ffffff"
-        android:padding="5dp"
-        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@color/blue_400"
+        android:padding="15dp"
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter"
         android:contentDescription="@string/app_name"/>
 </RelativeLayout>

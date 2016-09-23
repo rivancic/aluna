@@ -50,10 +50,9 @@ public class MainActivity extends BaseActivity {
         @Override
         public void initCard(SlidingCard card, int index) {
 
-
             ImageView sliderIv = (ImageView) card.findViewById(R.id.main_image_slider_iv);
             Image image = images.get(index);
-            Glide.with(MainActivity.this).load(image.getUrl()).into(sliderIv);
+            Glide.with(MainActivity.this).load(image.getUrl()).override(1000, 1000).fitCenter().into(sliderIv);
         }
 
         @Override
