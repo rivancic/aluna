@@ -10,9 +10,31 @@
     tools:context="com.rivancic.aluna.activities.ContactActivity"
     tools:showIn="@layout/contact_activity">
 
+    <android.support.percent.PercentRelativeLayout
+        android:id="@+id/contact_container_prl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/contact_iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"/>
+
+        <!--app:layout_marginTopPercent="22%"-->
+        <ImageView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mail_outline_black_24dp"
+            app:layout_marginLeftPercent="81%"/>
+
+        <!--app:layout_marginTopPercent="46%"-->
+        <ImageView
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_phone_black_24dp"
+            app:layout_marginLeftPercent="81%"
+            />
+    </android.support.percent.PercentRelativeLayout>
 </ScrollView>

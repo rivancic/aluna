@@ -46,16 +46,11 @@ public class AlunaWebRepository implements AlunaRepository {
 
         Thread downloadThread = new Thread() {
             public void run() {
-                Document doc;
                 try {
-                    Timber.i(webSite);
-                    doc = Jsoup.connect(webSite).get();
-                    if (doc != null) {
-                        List<Image> mainImages = jsoupParser.parseMainImagesResult(doc);
-
-                        returnMainImagesResult(mainImages);
-                    }
-                } catch (IOException e) {
+                    AlunaRetrofit alunaRetrofit = new AlunaRetrofit();
+                    List<Image> mainImages = alunaRetrofit.getImageSlideshow();
+                    returnMainImagesResult(mainImages);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -99,7 +94,7 @@ public class AlunaWebRepository implements AlunaRepository {
                         List<Image> mainImages = jsoupParser.parseBestOfImagesResult(doc);
                         returnMainImagesResult(mainImages);
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

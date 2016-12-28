@@ -18,7 +18,9 @@ import timber.log.Timber;
  */
 public class JsoupParser {
 
-    private static final String CSS_IMAGE_QUERY = "#content .rsImg";
+   // private static final String CSS_IMAGE_QUERY = "#content .rsImg";
+    // pp-gallery-image
+   private static final String CSS_IMAGE_QUERY = "#pp-gallery-2 .pp-gallery-image";
     private static final String CSS_ABOUT_US_IMAGE_QUERY = ".entry-content.post-content img";
 
     private static final String CSS_BEST_OF_IMAGE_QUERY = ".post-content img";
