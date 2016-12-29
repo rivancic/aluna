@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.rivancic.aluna.R;
+import com.rivancic.aluna.repositories.EmailSending;
 
 import timber.log.Timber;
 
@@ -29,6 +30,8 @@ public class ContactActivity extends BaseActivity {
         contentView = R.layout.contact_activity;
         super.onCreate(savedInstanceState);
         initializeView();
+        EmailSending emailSending = new EmailSending();
+        emailSending.send();
     }
 
     private void initializeView() {

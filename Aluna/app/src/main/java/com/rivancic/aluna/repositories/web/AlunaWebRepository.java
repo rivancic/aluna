@@ -85,15 +85,19 @@ public class AlunaWebRepository implements AlunaRepository {
 
         Thread downloadThread = new Thread() {
             public void run() {
-                Document doc;
+              //  Document doc;
                 try {
-                    String url = webSite + BEST_OF;
+
+                    AlunaRetrofit alunaRetrofit = new AlunaRetrofit();
+                    List<Image> mainImages = alunaRetrofit.getImageSlideshow();
+                    returnMainImagesResult(mainImages);
+                   /* String url = webSite + BEST_OF;
                     Timber.i(url);
                     doc = Jsoup.connect(url).get();
                     if (doc != null) {
                         List<Image> mainImages = jsoupParser.parseBestOfImagesResult(doc);
                         returnMainImagesResult(mainImages);
-                    }
+                    }*/
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
