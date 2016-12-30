@@ -60,6 +60,9 @@ public class AlunaRetrofit {
                 Image image = new Image();
                 image.setUrl(included.getAttributes().getSrc());
                 images.add(image);
+
+                // Get thumbnail image
+                image.setThumbnailUrl(included.getAttributes().getThumbnailImageUrl());
             }
 
             // Read next page from included

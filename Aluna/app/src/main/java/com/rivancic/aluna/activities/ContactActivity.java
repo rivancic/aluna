@@ -53,8 +53,6 @@ public class ContactActivity extends BaseActivity {
         contentView = R.layout.contact_activity;
         super.onCreate(savedInstanceState);
         initializeView();
-        // EmailSending emailSending = new EmailSending();
-        // emailSending.send();
     }
 
     private void initializeView() {
@@ -71,7 +69,6 @@ public class ContactActivity extends BaseActivity {
     private void call() {
 
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+38651397570"));
-      //  startActivity(intent);
     }
 
     private void sendEmail() {

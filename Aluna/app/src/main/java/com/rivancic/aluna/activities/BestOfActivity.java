@@ -26,6 +26,8 @@ public class BestOfActivity extends BaseActivity {
 
     private OnMainImageResponseReceivedListener onMainImageResponseReceived;
     private CustomImageGalleryFragment fragment;
+    ArrayList<Image> mainImages;
+    boolean isRestarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,9 @@ public class BestOfActivity extends BaseActivity {
         ImageGalleryActivity.setImageThumbnailLoader(thumbnailImageLoader);
         CustomImageGalleryFragment.setImageThumbnailLoader(thumbnailImageLoader);
         FullScreenImageGalleryActivity.setFullScreenImageLoader(fullImageLoader);
+        if(savedInstanceState!= null){
+            isRestarted = true;
+        }
     }
 
     private void initializeMainFunctionality() {
@@ -50,15 +55,22 @@ public class BestOfActivity extends BaseActivity {
     protected void onStart() {
 
         super.onStart();
-        bus.register(onMainImageResponseReceived);
-        alunaRepository.getBestOfImages();
+        if(!isRestarted) {
+            bus.register(onMainImageResponseReceived);
+            alunaRepository.getBestOfImages();
+        }
+        isRestarted = false;
     }
 
     @Override
     protected void onStop() {
 
         super.onStop();
-        bus.unregister(onMainImageResponseReceived);
+        try {
+            bus.unregister(onMainImageResponseReceived);
+        } catch (Exception e) {
+            Timber.i("Already unregistered.");
+        }
     }
 
     /**
@@ -69,30 +81,35 @@ public class BestOfActivity extends BaseActivity {
         @Subscribe
         public void getMainImages(ArrayList<Image> mainImages) {
 
-            ArrayList<String> imageURLs = new ArrayList<>();
-            for (Image image :
-                    mainImages) {
-                imageURLs.add(image.getUrl());
-            }
+            populateImages(mainImages);
+        }
+    }
 
-            Bundle bundle = new Bundle();
-            bundle.putStringArrayList(ImageGalleryFragment.KEY_IMAGES, imageURLs);
-            bundle.putString(ImageGalleryActivity.KEY_TITLE, "Unsplash Images");
+    private void populateImages(ArrayList<Image> mainImages) {
 
-            Timber.i("Best of images handled in best of activity.");
-            if (fragment == null) {
-                fragment = CustomImageGalleryFragment.newInstance(bundle);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        //.replace(android.R.id.content, fragment, "")
-                        .replace(R.id.image_gallery, fragment, "")
-                        .commit();
-            } else {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .attach(fragment)
-                        .commit();
-            }
+        BestOfActivity.this.mainImages = mainImages;
+        ArrayList<String> imageURLs = new ArrayList<>();
+        for (Image image :
+                mainImages) {
+            imageURLs.add(image.getUrl());
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(ImageGalleryFragment.KEY_IMAGES, imageURLs);
+        bundle.putString(ImageGalleryActivity.KEY_TITLE, "Unsplash Images");
+
+        Timber.i("Best of images handled in best of activity.");
+        if (fragment == null) {
+            fragment = CustomImageGalleryFragment.newInstance(bundle);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.image_gallery, fragment, "")
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .attach(fragment)
+                    .commit();
         }
     }
 
