@@ -3,26 +3,49 @@ package com.rivancic.aluna.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.percent.PercentRelativeLayout;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.rivancic.aluna.R;
+import com.rivancic.aluna.models.EmailContent;
 import com.rivancic.aluna.repositories.EmailSending;
-
-import timber.log.Timber;
 
 
 /**
  * TODO Add fields to send message through email or some other means...
+ *
+ *
+ * TODO Add fields verification and validation
+ * TODO Add action -> sending the email
+ * TODO date should be controll for choosing date.
+ * TODO format email message form fields.
+ * TODO check that all fields have proper type.
+ * TODO set message when email is sent.
  */
 public class ContactActivity extends BaseActivity {
 
-    private ImageView contactIv;
-    private ImageView emailIv;
-    private ImageView phoneIv;
-    private PercentRelativeLayout contactContainer;
+    EditText name;
+    EditText email;
+    EditText phone;
+    EditText date;
+    EditText message;
+    Button sendButton;
+
+    private class SubmitOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+
+            EmailContent emailContent = new EmailContent();
+            emailContent.date = date.getText().toString();
+            emailContent.email = email.getText().toString();
+            emailContent.message = message.getText().toString();
+            emailContent.name = name.getText().toString();
+            emailContent.phone = phone.getText().toString();
+            EmailSending emailSending = new EmailSending();
+            emailSending.send(emailContent);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,35 +53,19 @@ public class ContactActivity extends BaseActivity {
         contentView = R.layout.contact_activity;
         super.onCreate(savedInstanceState);
         initializeView();
-        EmailSending emailSending = new EmailSending();
-        emailSending.send();
+        // EmailSending emailSending = new EmailSending();
+        // emailSending.send();
     }
 
     private void initializeView() {
 
-        contactIv = (ImageView) findViewById(R.id.contact_iv);
-        emailIv = (ImageView) findViewById(R.id.email);
-        phoneIv = (ImageView) findViewById(R.id.phone);
-        contactIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.contact));
-        contactIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //sendEmail();
-                call();
-            }
-        });
-        contactContainer = (PercentRelativeLayout) findViewById(R.id.contact_container_prl);
-        contactIv.post(new Runnable() {
-            @Override
-            public void run() {
-
-                int imageHeight = contactIv.getHeight();
-                Timber.i("Image height: %d", imageHeight);
-                emailIv.setY(Math.round(imageHeight*16/100));
-                phoneIv.setY(Math.round(imageHeight*34/100));
-            }
-        });
+        sendButton = (Button) findViewById(R.id.contact_submit);
+        sendButton.setOnClickListener(new SubmitOnClickListener());
+        name = (EditText) findViewById(R.id.contact_name);
+        email = (EditText) findViewById(R.id.contact_email);
+        phone = (EditText) findViewById(R.id.contact_phone);
+        date = (EditText) findViewById(R.id.contact_date);
+        message = (EditText) findViewById(R.id.contact_message);
     }
 
     private void call() {

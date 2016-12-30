@@ -24,7 +24,7 @@ public class AlunaRetrofit {
 
     Retrofit retrofit;
     GitHubService service;
-    private String imagesSlideshowUrl = "http://alunaweddings.com/wp-admin/admin-ajax.php?id=41&action=pp_api_gallery";
+    //
 
     AlunaRetrofit() {
 
@@ -37,23 +37,50 @@ public class AlunaRetrofit {
         service = retrofit.create(GitHubService.class);
     }
 
-    public List<Image> getImageSlideshow() throws IOException {
+    public List<Image> getImageSlideshow(String imagesSlideshowUrl) throws IOException {
 
         final List<Image> images = new ArrayList<>();
-        Call<ImageSlideshow> slideshowImages = service.getSlideshowImages(imagesSlideshowUrl);
+        NextSlideshow nextSlideshow = new NextSlideshow();
+        nextSlideshow.nextLink = imagesSlideshowUrl;
+        do {
+            nextSlideshow = getSlideshowPart(images, nextSlideshow.nextLink);
+        } while (nextSlideshow.hasNext);
+        return images;
+    }
+
+    private NextSlideshow getSlideshowPart(List<Image> images, String url) throws IOException {
+
+        NextSlideshow nextSlideshow = new NextSlideshow();
+        Call<ImageSlideshow> slideshowImages = service.getSlideshowImages(url);
         Response<ImageSlideshow> execute = slideshowImages.execute();
         if(execute.isSuccessful()) {
             Timber.i("OK");
-            for(Included included: execute.body().getIncluded()) {
+            List<Included> includedList = execute.body().getIncluded();
+            for(Included included: includedList) {
                 Image image = new Image();
                 image.setUrl(included.getAttributes().getSrc());
                 images.add(image);
+            }
+
+            // Read next page from included
+            if(!includedList.isEmpty()) {
+                String next = includedList.get(0).getLinks().getNext();
+                if(next != null && !next.isEmpty()) {
+                    nextSlideshow.hasNext = true;
+                    nextSlideshow.nextLink = next;
+                }
             }
         } else
         {
             Timber.i("Failure");
         }
-        return images;
+        return nextSlideshow;
+    }
+
+    private class NextSlideshow {
+
+        boolean hasNext = false;
+        String nextLink = "";
     }
 
     public interface GitHubService {

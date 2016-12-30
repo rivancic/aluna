@@ -10,31 +10,84 @@
     tools:context="com.rivancic.aluna.activities.ContactActivity"
     tools:showIn="@layout/contact_activity">
 
-    <android.support.percent.PercentRelativeLayout
-        android:id="@+id/contact_container_prl"
+    <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:layout_marginTop="@dimen/dimen_16"
+        android:layout_width="wrap_content"
+        android:text="GET IN TOUCH"
+        android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/dimen_8"
+        android:hint="Your name (required)"
         android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/contact_iv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"/>
 
-        <!--app:layout_marginTopPercent="22%"-->
-        <ImageView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_mail_outline_black_24dp"
-            app:layout_marginLeftPercent="81%"/>
+        <EditText
+            android:id="@+id/contact_name"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"/>
+    </android.support.design.widget.TextInputLayout>
 
-        <!--app:layout_marginTopPercent="46%"-->
-        <ImageView
-            android:id="@+id/phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_phone_black_24dp"
-            app:layout_marginLeftPercent="81%"
-            />
-    </android.support.percent.PercentRelativeLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="@dimen/dimen_8"
+        android:layout_width="wrap_content"
+        android:hint="Your e-mail (required)"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/contact_email"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="@dimen/dimen_8"
+        android:layout_width="wrap_content"
+        android:hint="Your phone number"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/contact_phone"
+            android:layout_width="300dp"
+            android:inputType="phone"
+            android:layout_height="wrap_content"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="@dimen/dimen_8"
+        android:layout_width="wrap_content"
+        android:hint="Date"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/contact_date"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="@dimen/dimen_8"
+        android:layout_width="wrap_content"
+        android:hint="Your message (Required)"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/contact_message"
+            android:lines="5"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_width="150dp"
+        android:text="Submit"
+        android:id="@+id/contact_submit"
+        android:layout_height="70dp"/>
+
+    </LinearLayout>
 </ScrollView>

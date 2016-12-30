@@ -24,6 +24,8 @@ public class AlunaWebRepository implements AlunaRepository {
     private static final String TAG = "AlunaWebRepository";
     private static final String ABOUT_US = "o-nama/";
     private static final String BEST_OF = "best-of-weddings/";
+    private String mainImagesSlideshowUrl = "http://alunaweddings.com/wp-admin/admin-ajax.php?id=41&action=pp_api_gallery";
+    private String bestOfImagesSlideshowUrl = "http://alunaweddings.com/wp-admin/admin-ajax.php?id=839&action=pp_api_gallery";
 
     // TODO extract to properties file
     private static String webSite;
@@ -48,7 +50,7 @@ public class AlunaWebRepository implements AlunaRepository {
             public void run() {
                 try {
                     AlunaRetrofit alunaRetrofit = new AlunaRetrofit();
-                    List<Image> mainImages = alunaRetrofit.getImageSlideshow();
+                    List<Image> mainImages = alunaRetrofit.getImageSlideshow(mainImagesSlideshowUrl);
                     returnMainImagesResult(mainImages);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -85,19 +87,11 @@ public class AlunaWebRepository implements AlunaRepository {
 
         Thread downloadThread = new Thread() {
             public void run() {
-              //  Document doc;
                 try {
 
                     AlunaRetrofit alunaRetrofit = new AlunaRetrofit();
-                    List<Image> mainImages = alunaRetrofit.getImageSlideshow();
+                    List<Image> mainImages = alunaRetrofit.getImageSlideshow(bestOfImagesSlideshowUrl);
                     returnMainImagesResult(mainImages);
-                   /* String url = webSite + BEST_OF;
-                    Timber.i(url);
-                    doc = Jsoup.connect(url).get();
-                    if (doc != null) {
-                        List<Image> mainImages = jsoupParser.parseBestOfImagesResult(doc);
-                        returnMainImagesResult(mainImages);
-                    }*/
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -122,7 +116,6 @@ public class AlunaWebRepository implements AlunaRepository {
         // TODO refactor that
         // Get a handler that can be used to post to the main thread
         Handler mainHandler = new Handler(context.getMainLooper());
-
         Runnable myRunnable = new Runnable() {
             @Override
             public void run() {
