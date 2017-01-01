@@ -1,23 +1,20 @@
 package com.rivancic.aluna.activities;
 
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.webkit.WebView;
 
-import com.bumptech.glide.Glide;
 import com.rivancic.aluna.R;
-import com.rivancic.aluna.models.Image;
-import com.squareup.otto.Subscribe;
-
-import timber.log.Timber;
 
 /**
  * TODO expand image through the whole screen.
  */
 public class AboutUsActivity extends BaseActivity {
 
-    private ImageView aboutUsIv;
-    private OnAboutUsImageReceivedListener onAboutUsImageReceivedListener
-            = new OnAboutUsImageReceivedListener();
+  //  private ImageView aboutUsIv;
+   /* private OnAboutUsImageReceivedListener onAboutUsImageReceivedListener
+            = new OnAboutUsImageReceivedListener();*/
+
+    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,37 +26,39 @@ public class AboutUsActivity extends BaseActivity {
 
     private void initializeMainFunctionality() {
 
-        alunaRepository.getAboutUsImage();
-        aboutUsIv = (ImageView) findViewById(R.id.about_us_iv);
+        webView = (WebView) findViewById(R.id.about_us);
+        webView.loadUrl("http://alunaweddings.com/o-naju/");
+     //   alunaRepository.getAboutUsImage();
+ //       aboutUsIv = (ImageView) findViewById(R.id.about_us_iv);
     }
 
     @Override
     protected void onResume() {
 
         super.onResume();
-        bus.register(onAboutUsImageReceivedListener);
+      //  bus.register(onAboutUsImageReceivedListener);
     }
 
     @Override
     protected void onPause() {
 
         super.onPause();
-        bus.unregister(onAboutUsImageReceivedListener);
+      //  bus.unregister(onAboutUsImageReceivedListener);
     }
 
-    /**
+   /* *//**
      * Display images in image slider
-     */
+     *//*
     class OnAboutUsImageReceivedListener {
 
         @Subscribe
         public void getAboutImage(Image aboutUsImage) {
 
             Timber.i("About us image received in about us activity.");
-            Glide
+           *//* Glide
                     .with(AboutUsActivity.this)
                     .load(aboutUsImage.getUrl())
-                    .dontTransform().into(aboutUsIv);
+                    .dontTransform().into(aboutUsIv);*//*
         }
-    }
+    }*/
 }
