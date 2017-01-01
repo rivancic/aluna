@@ -12,6 +12,7 @@ import com.rivancic.aluna.R;
 import com.rivancic.aluna.models.EmailContent;
 import com.rivancic.aluna.repositories.EmailSending;
 
+import timber.log.Timber;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -46,7 +47,36 @@ public class ContactActivity extends BaseActivity {
             emailContent.name = name.getText().toString();
             emailContent.phone = phone.getText().toString();
             EmailSending emailSending = new EmailSending();
-            emailSending.send(emailContent);
+            try {
+                emailSending.send(emailContent);
+            } catch (EmailSending.EmailContentValidationException emailContentValidationException) {
+
+                // TODO show errors on UI.
+                Timber.e(emailContentValidationException,"email content not valid");
+                showErrors(emailContentValidationException);
+            }
+        }
+    }
+
+    private void showErrors(EmailSending.EmailContentValidationException emailContentValidationException) {
+
+        emailContentValidationException.getValidationErrors();
+        for (EmailSending.ValidationError validationE:
+        emailContentValidationException.getValidationErrors()) {
+            if(validationE == EmailSending.ValidationError.EMAIL_NOT_VALID) {
+                email.setError("Email is not valid");
+            }
+            if(validationE == EmailSending.ValidationError.NAME_REQUIRED) {
+                name.setError("Name is required");
+            }
+
+            if(validationE == EmailSending.ValidationError.EMAIL_REQUIRED) {
+                email.setError("Email is required");
+            }
+
+            if(validationE == EmailSending.ValidationError.MESSAGE_REQUIRED) {
+                message.setError("Message is required");
+            }
         }
     }
 

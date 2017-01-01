@@ -11,94 +11,109 @@
     tools:showIn="@layout/contact_activity">
 
     <LinearLayout
-        android:paddingLeft="@dimen/dimen_16"
-        android:paddingRight="@dimen/dimen_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:paddingLeft="@dimen/dimen_16"
+        android:paddingRight="@dimen/dimen_16">
 
-    <TextView
-        android:layout_marginTop="@dimen/dimen_16"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:textColor="@color/aluna_black"
-        android:textStyle="bold"
-        android:textSize="@dimen/text_m"
-        android:text="GET IN TOUCH"
-        android:layout_height="wrap_content"/>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/dimen_8"
-        android:hint="Your name (required)"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/contact_name"
-            android:inputType="textPersonName"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_8"
+            android:layout_marginTop="@dimen/dimen_16"
+            android:gravity="center"
+            android:text="GET IN TOUCH"
+            android:textColor="@color/aluna_black"
+            android:textSize="@dimen/text_m"
+            android:textStyle="bold"/>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_marginTop="@dimen/dimen_8"
-        android:layout_width="match_parent"
-        android:hint="Your e-mail (required)"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/contact_email"
-            android:inputType="textEmailAddress"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:hint="Your name (required)">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_marginTop="@dimen/dimen_8"
-        android:layout_width="match_parent"
-        android:hint="Your phone number"
-        android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/contact_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"/>
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/contact_phone"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:inputType="phone"
-            android:layout_height="wrap_content"/>
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:hint="Your e-mail (required)">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_marginTop="@dimen/dimen_8"
-        android:layout_width="match_parent"
-        android:hint="Date"
-        android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/contact_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"/>
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/contact_date"
-            android:inputType="date"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:hint="Your phone number">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_marginTop="@dimen/dimen_8"
-        android:layout_width="match_parent"
-        android:hint="Your message (Required)"
-        android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/contact_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"/>
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/contact_message"
-            android:lines="5"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:hint="Date">
 
-    <Button
-        android:layout_width="match_parent"
-        android:text="Submit"
-        android:id="@+id/contact_submit"
-        android:backgroundTint="@color/white"
-        android:layout_height="70dp"/>
+            <EditText
+                android:id="@+id/contact_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:hint="Your message (Required)">
+
+            <EditText
+                android:id="@+id/contact_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="5"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/contact_submit"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:backgroundTint="@color/white"
+            android:text="Submit"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="@dimen/dimen_16"
+            android:src="@drawable/vejica"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:layout_marginBottom="@dimen/dimen_16"
+            android:text="You can also write us directly at info@alunaweddings.com or you can give us a call at +38651397570. We can't wait to hear from you!"/>
 
     </LinearLayout>
 </ScrollView>
