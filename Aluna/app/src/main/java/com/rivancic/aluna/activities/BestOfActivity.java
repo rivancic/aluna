@@ -1,5 +1,6 @@
 package com.rivancic.aluna.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +19,7 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 
 import timber.log.Timber;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * TODO Make the ActionBar in this activity dark as it shows photos.
@@ -52,11 +54,23 @@ public class BestOfActivity extends BaseActivity {
     }
 
     @Override
+    protected void onRestart() {
+
+        super.onRestart();
+        isRestarted = true;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onStart() {
 
         super.onStart();
+        bus.register(onMainImageResponseReceived);
         if(!isRestarted) {
-            bus.register(onMainImageResponseReceived);
             alunaRepository.getBestOfImages();
         }
         isRestarted = false;

@@ -1,5 +1,6 @@
 package com.rivancic.aluna.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * TODO Instead of text Aluna Weddings show Aluna Weddings logo in ActionBar.
@@ -24,14 +26,9 @@ public class MainActivity extends BaseActivity {
 
     private OnMainImageResponseReceivedListener onMainImageResponseReceived;
     private ContainerView mainSlider;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        contentView = R.layout.main_activity;
-        super.onCreate(savedInstanceState);
-        initializeMainFunctionality();
-    }
+    private boolean isRestarted = false;
+    private ArrayList<Image> mainImages;
+    private static final String IMAGES = "IMAGES";
 
     private void initializeMainFunctionality() {
 
@@ -65,21 +62,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-
-        super.onStart();
-        bus.register(onMainImageResponseReceived);
-        alunaRepository.getMainPictures();
-    }
-
-    @Override
-    protected void onStop() {
-
-        super.onStop();
-        bus.unregister(onMainImageResponseReceived);
-    }
-
     /**
      * Display images in image slider
      */
@@ -88,11 +70,76 @@ public class MainActivity extends BaseActivity {
         @Subscribe
         public void getMainImages(ArrayList<Image> mainImages) {
 
-
+            MainActivity.this.mainImages = mainImages;
             Timber.i("Main images handled in main activity.");
-            mainSlider.initCardView(new MainSliderContainer(mainImages),
-                    R.layout.main_image_slider_item,
-                    R.id.sliding_card_content_view);
+            initCardSlider(mainImages);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putSerializable(IMAGES, mainImages);
+        super.onSaveInstanceState(outState);
+    }
+
+    private void initCardSlider(ArrayList<Image> mainImages) {
+
+        mainSlider.initCardView(new MainSliderContainer(mainImages),
+                R.layout.main_image_slider_item,
+                R.id.sliding_card_content_view);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        contentView = R.layout.main_activity;
+        super.onCreate(savedInstanceState);
+        initializeMainFunctionality();
+        if (savedInstanceState != null) {
+            isRestarted = true;
+            mainImages = (ArrayList<Image>) savedInstanceState.getSerializable(IMAGES);
+            if(mainImages != null) {
+                initCardSlider(mainImages);
+            }
+        }
+        Timber.i("onCreate");
+    }
+
+    @Override
+    protected void onRestart() {
+
+        super.onRestart();
+        isRestarted = true;
+        Timber.i("onRestart");
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        bus.register(onMainImageResponseReceived);
+        Timber.i("onStart");
+        if (!isRestarted) {
+            alunaRepository.getMainPictures();
+        }
+        isRestarted = false;
+    }
+
+    @Override
+    protected void onStop() {
+
+        super.onStop();
+        try {
+            bus.unregister(onMainImageResponseReceived);
+        } catch (Exception e) {
+            Timber.i("Nothing to unregister");
         }
     }
 }

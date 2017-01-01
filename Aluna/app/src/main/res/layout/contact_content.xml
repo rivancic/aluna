@@ -11,82 +11,93 @@
     tools:showIn="@layout/contact_activity">
 
     <LinearLayout
+        android:paddingLeft="@dimen/dimen_16"
+        android:paddingRight="@dimen/dimen_16"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
 
     <TextView
         android:layout_marginTop="@dimen/dimen_16"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textColor="@color/aluna_black"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_m"
         android:text="GET IN TOUCH"
         android:layout_height="wrap_content"/>
 
     <android.support.design.widget.TextInputLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_marginTop="@dimen/dimen_8"
         android:hint="Your name (required)"
         android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/contact_name"
-            android:layout_width="300dp"
+            android:inputType="textPersonName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_marginTop="@dimen/dimen_8"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:hint="Your e-mail (required)"
         android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/contact_email"
-            android:layout_width="300dp"
+            android:inputType="textEmailAddress"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_marginTop="@dimen/dimen_8"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:hint="Your phone number"
         android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/contact_phone"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:inputType="phone"
             android:layout_height="wrap_content"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_marginTop="@dimen/dimen_8"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:hint="Date"
         android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/contact_date"
-            android:layout_width="300dp"
+            android:inputType="date"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_marginTop="@dimen/dimen_8"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:hint="Your message (Required)"
         android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/contact_message"
             android:lines="5"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:text="Submit"
         android:id="@+id/contact_submit"
+        android:backgroundTint="@color/white"
         android:layout_height="70dp"/>
 
     </LinearLayout>

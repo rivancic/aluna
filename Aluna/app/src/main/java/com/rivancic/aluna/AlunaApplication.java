@@ -7,6 +7,7 @@ import com.rivancic.aluna.repositories.web.AlunaWebRepository;
 import com.squareup.otto.Bus;
 
 import timber.log.Timber;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Class used for initializing application wide dependencies.
@@ -45,7 +46,15 @@ public class AlunaApplication extends Application {
         super.onCreate();
         initializeTimber();
         alunaRepository = new AlunaWebRepository(bus, this);
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/Spinnaker-Regular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build());
     }
+   /* @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }*/
 
     private void initializeTimber() {
 

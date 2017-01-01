@@ -56,11 +56,9 @@ public class AboutUsActivity extends BaseActivity {
         public void getAboutImage(Image aboutUsImage) {
 
             Timber.i("About us image received in about us activity.");
-          //  int width = ImageGalleryUtils.getScreenWidth(AboutUsActivity.this);
             Glide
                     .with(AboutUsActivity.this)
                     .load(aboutUsImage.getUrl())
-                   // .override(width, Target.SIZE_ORIGINAL)
                     .dontTransform().into(aboutUsIv);
         }
     }

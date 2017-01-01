@@ -1,5 +1,6 @@
 package com.rivancic.aluna.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.widget.EditText;
 import com.rivancic.aluna.R;
 import com.rivancic.aluna.models.EmailContent;
 import com.rivancic.aluna.repositories.EmailSending;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 /**
@@ -53,6 +56,11 @@ public class ContactActivity extends BaseActivity {
         contentView = R.layout.contact_activity;
         super.onCreate(savedInstanceState);
         initializeView();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     private void initializeView() {
