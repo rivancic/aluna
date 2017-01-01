@@ -4,17 +4,18 @@ import android.os.Bundle;
 import android.webkit.WebView;
 
 import com.rivancic.aluna.R;
+import com.rivancic.aluna.messages.AboutUsPageContentResult;
+import com.squareup.otto.Subscribe;
+
+import timber.log.Timber;
 
 /**
  * TODO expand image through the whole screen.
  */
 public class AboutUsActivity extends BaseActivity {
 
-  //  private ImageView aboutUsIv;
-   /* private OnAboutUsImageReceivedListener onAboutUsImageReceivedListener
-            = new OnAboutUsImageReceivedListener();*/
-
     WebView webView;
+    OnAboutUsPageReceivedListener aboutUsPageReceivedListener = new OnAboutUsPageReceivedListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,38 +28,33 @@ public class AboutUsActivity extends BaseActivity {
     private void initializeMainFunctionality() {
 
         webView = (WebView) findViewById(R.id.about_us);
-        webView.loadUrl("http://alunaweddings.com/o-naju/");
-     //   alunaRepository.getAboutUsImage();
- //       aboutUsIv = (ImageView) findViewById(R.id.about_us_iv);
+        alunaRepository.getAboutUsPageContent();
     }
 
     @Override
     protected void onResume() {
 
         super.onResume();
-      //  bus.register(onAboutUsImageReceivedListener);
+          bus.register(aboutUsPageReceivedListener);
     }
 
     @Override
     protected void onPause() {
 
         super.onPause();
-      //  bus.unregister(onAboutUsImageReceivedListener);
+          bus.unregister(aboutUsPageReceivedListener);
     }
 
    /* *//**
      * Display images in image slider
-     *//*
-    class OnAboutUsImageReceivedListener {
+     */
+    class OnAboutUsPageReceivedListener {
 
         @Subscribe
-        public void getAboutImage(Image aboutUsImage) {
+        public void getAboutImage(AboutUsPageContentResult aboutUsPageContentResult) {
 
-            Timber.i("About us image received in about us activity.");
-           *//* Glide
-                    .with(AboutUsActivity.this)
-                    .load(aboutUsImage.getUrl())
-                    .dontTransform().into(aboutUsIv);*//*
+            Timber.i("About us page content received in about us activity.");
+            webView.loadData(aboutUsPageContentResult.aboutUsPageContent,  "text/html; charset=utf-8", "UTF-8");
         }
-    }*/
+    }
 }

@@ -22,8 +22,8 @@ public class JsoupParser {
     // pp-gallery-image
    private static final String CSS_IMAGE_QUERY = "#pp-gallery-2 .pp-gallery-image";
     private static final String CSS_ABOUT_US_IMAGE_QUERY = ".entry-content.post-content img";
-
     private static final String CSS_BEST_OF_IMAGE_QUERY = ".post-content img";
+    private static final String ABOUT_PAGE_CONTENT = ".pp-layout-entity.pp-block.block-about";
 
     /**
      * Get image elements from website content
@@ -80,5 +80,19 @@ public class JsoupParser {
             //mainImages.add(mainImage);
         }
         return aboutUsImage;
+    }
+
+    /**
+     * Get image elements from website content
+     */
+    public String parseAboutUsPage(Document doc) {
+
+        String aboutUsPage = "";
+        Elements aboutUsImageElements = doc.select(".pp-layout-entity.pp-block.block-logo-menu");
+        aboutUsImageElements.remove();
+        aboutUsImageElements = doc.select(".pp-tile.slideout-menu-toggle.slideout-menu-graphic");
+        aboutUsImageElements.remove();
+        aboutUsPage = doc.toString();
+        return aboutUsPage;
     }
 }
