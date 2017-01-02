@@ -2,7 +2,9 @@ package com.rivancic.aluna.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.mxn.soul.slidingcard_core.ContainerView;
@@ -28,12 +30,14 @@ public class MainActivity extends BaseActivity {
     private ContainerView mainSlider;
     private boolean isRestarted = false;
     private ArrayList<Image> mainImages;
+    private ProgressBar progressBar;
     private static final String IMAGES = "IMAGES";
 
     private void initializeMainFunctionality() {
 
         onMainImageResponseReceived = new OnMainImageResponseReceivedListener();
         mainSlider = (ContainerView) findViewById(R.id.main_image_slider);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
     }
 
     class MainSliderContainer implements ContainerView.ContainerInterface {
@@ -73,6 +77,7 @@ public class MainActivity extends BaseActivity {
             MainActivity.this.mainImages = mainImages;
             Timber.i("Main images handled in main activity.");
             initCardSlider(mainImages);
+            progressBar.setVisibility(View.GONE);
         }
     }
 

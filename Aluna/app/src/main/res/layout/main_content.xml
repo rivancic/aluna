@@ -9,6 +9,13 @@
     tools:context=".activities.MainActivity"
     tools:showIn="@layout/main_app_bar">
 
+   <ProgressBar
+       android:layout_width="70dp"
+       android:layout_height="70dp"
+       android:indeterminate="true"
+       android:id="@+id/progress_bar"
+       android:layout_centerInParent="true"/>
+
    <!-- Add Carousel -->
    <com.rivancic.aluna.CustomContainerView
        android:id="@+id/main_image_slider"
