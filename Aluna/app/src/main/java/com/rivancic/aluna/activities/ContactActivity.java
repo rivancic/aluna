@@ -1,19 +1,17 @@
 package com.rivancic.aluna.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.rivancic.aluna.R;
 import com.rivancic.aluna.models.EmailContent;
 import com.rivancic.aluna.repositories.EmailSending;
 
 import timber.log.Timber;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 /**
@@ -29,11 +27,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class ContactActivity extends BaseActivity {
 
-    EditText name;
-    EditText email;
-    EditText phone;
-    EditText date;
-    EditText message;
+    TextInputEditText name;
+    TextInputEditText email;
+    TextInputEditText phone;
+    TextInputEditText date;
+    TextInputEditText message;
     Button sendButton;
 
     private class SubmitOnClickListener implements View.OnClickListener {
@@ -88,20 +86,15 @@ public class ContactActivity extends BaseActivity {
         initializeView();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
-
     private void initializeView() {
 
         sendButton = (Button) findViewById(R.id.contact_submit);
         sendButton.setOnClickListener(new SubmitOnClickListener());
-        name = (EditText) findViewById(R.id.contact_name);
-        email = (EditText) findViewById(R.id.contact_email);
-        phone = (EditText) findViewById(R.id.contact_phone);
-        date = (EditText) findViewById(R.id.contact_date);
-        message = (EditText) findViewById(R.id.contact_message);
+        name = (TextInputEditText) findViewById(R.id.contact_name);
+        email = (TextInputEditText) findViewById(R.id.contact_email);
+        phone = (TextInputEditText) findViewById(R.id.contact_phone);
+        date = (TextInputEditText) findViewById(R.id.contact_date);
+        message = (TextInputEditText) findViewById(R.id.contact_message);
     }
 
     private void call() {

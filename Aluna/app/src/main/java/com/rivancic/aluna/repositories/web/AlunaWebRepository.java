@@ -5,6 +5,7 @@ import android.os.Handler;
 
 import com.rivancic.aluna.R;
 import com.rivancic.aluna.messages.AboutUsPageContentResult;
+import com.rivancic.aluna.messages.MainImagesResult;
 import com.rivancic.aluna.models.Image;
 import com.rivancic.aluna.repositories.AlunaRepository;
 import com.squareup.otto.Bus;
@@ -13,7 +14,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 import timber.log.Timber;
 
@@ -25,12 +26,11 @@ public class AlunaWebRepository implements AlunaRepository {
     private static final String TAG = "AlunaWebRepository";
     private static final String ABOUT_US = "o-nama/";
     private static final String BEST_OF = "best-of-weddings/";
-    private String mainImagesSlideshowUrl = "http://alunaweddings.com/wp-admin/admin-ajax.php?id=41&action=pp_api_gallery";
-    private String bestOfImagesSlideshowUrl = "http://alunaweddings.com/wp-admin/admin-ajax.php?id=839&action=pp_api_gallery";
-    private String aboutPage ="http://alunaweddings.com/o-naju/";
-
     // TODO extract to properties file
     private static String webSite;
+    private String mainImagesSlideshowUrl = "http://alunaweddings.com/wp-admin/admin-ajax.php?id=41&action=pp_api_gallery";
+    private String bestOfImagesSlideshowUrl = "http://alunaweddings.com/wp-admin/admin-ajax.php?id=839&action=pp_api_gallery";
+    private String aboutPage = "http://alunaweddings.com/o-naju/";
     private JsoupParser jsoupParser = new JsoupParser();
     private Bus bus;
     private Context context;
@@ -50,33 +50,12 @@ public class AlunaWebRepository implements AlunaRepository {
 
         Thread downloadThread = new Thread() {
             public void run() {
+
                 try {
                     AlunaRetrofit alunaRetrofit = new AlunaRetrofit();
-                    List<Image> mainImages = alunaRetrofit.getImageSlideshow(mainImagesSlideshowUrl);
-                    returnMainImagesResult(mainImages);
+                    ArrayList<Image> mainImages = alunaRetrofit.getImageSlideshow(mainImagesSlideshowUrl, new ReturnMainImages());
+                    //returnMainImagesResult(mainImages);
                 } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        downloadThread.start();
-    }
-
-    @Override
-    public void getAboutUsImage() {
-
-        Thread downloadThread = new Thread() {
-            public void run() {
-                Document doc;
-                try {
-                    String url = webSite + ABOUT_US;
-                    Timber.i(url);
-                    doc = Jsoup.connect(url).get();
-                    if (doc != null) {
-                        Image aboutUsImage = jsoupParser.parseAboutUsImageResult(doc);
-                        returnAboutUsImageResult(aboutUsImage);
-                    }
-                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -89,19 +68,36 @@ public class AlunaWebRepository implements AlunaRepository {
 
         Thread downloadThread = new Thread() {
             public void run() {
+
                 Document doc;
                 try {
-                //    String url = webSite + ABOUT_US;
                     Timber.i(aboutPage);
                     doc = Jsoup.connect(aboutPage).get();
                     if (doc != null) {
                         String aboutUsPage = jsoupParser.parseAboutUsPage(doc);
 
-                        // Image aboutUsImage = jsoupParser.parseAboutUsImageResult(doc);
                         returnAboutUsPageResult(aboutUsPage);
-                       // returnAboutUsImageResult(aboutUsImage);
                     }
                 } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        downloadThread.start();
+    }
+
+    @Override
+    public void getBestOfImages() {
+
+        Thread downloadThread = new Thread() {
+            public void run() {
+
+                try {
+
+                    AlunaRetrofit alunaRetrofit = new AlunaRetrofit();
+                    ArrayList<Image> mainImages = alunaRetrofit.getImageSlideshow(bestOfImagesSlideshowUrl, new ReturnBestOfImages());
+                  //  returnMainImagesResult(mainImages);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -127,71 +123,70 @@ public class AlunaWebRepository implements AlunaRepository {
         mainHandler.post(myRunnable);
     }
 
-    @Override
-    public void getBestOfImages() {
+    class ReturnMainImages implements ReturnListOfImages {
 
-        Thread downloadThread = new Thread() {
-            public void run() {
-                try {
+        /**
+         * Send response through Otto bus.
+         *
+         * @param mainImages list of images on the main page.
+         */
+        public void returnMainImagesResult(final ArrayList<Image> mainImages) {
 
-                    AlunaRetrofit alunaRetrofit = new AlunaRetrofit();
-                    List<Image> mainImages = alunaRetrofit.getImageSlideshow(bestOfImagesSlideshowUrl);
-                    returnMainImagesResult(mainImages);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            // Log response
+            Timber.i("Main images: ");
+            for (Image image :
+                    mainImages) {
+                Timber.i(image.toString());
+            }
+
+            final MainImagesResult mainImagesResult = new MainImagesResult();
+            mainImagesResult.setMainImages(mainImages);
+
+            // TODO refactor that
+            // Get a handler that can be used to post to the main thread
+            Handler mainHandler = new Handler(context.getMainLooper());
+            Runnable myRunnable = new Runnable() {
+                @Override
+                public void run() {
+
+                    bus.post(mainImagesResult);
                 }
-            }
-        };
-        downloadThread.start();
-    }
-
-    /**
-     * Send response through Otto bus.
-     * @param mainImages list of images on the main page.
-     */
-    private void returnMainImagesResult(final List<Image> mainImages) {
-
-        // Log response
-        Timber.i("Main images: ");
-        for (Image image :
-                mainImages) {
-            Timber.i(image.toString());
+            };
+            mainHandler.post(myRunnable);
         }
-
-        // TODO refactor that
-        // Get a handler that can be used to post to the main thread
-        Handler mainHandler = new Handler(context.getMainLooper());
-        Runnable myRunnable = new Runnable() {
-            @Override
-            public void run() {
-
-                bus.post(mainImages);
-            }
-        };
-        mainHandler.post(myRunnable);
     }
 
-    /**
-     * Send response through Otto bus.
-     * @param aboutUsImage image representing about us page.
-     */
-    private void returnAboutUsImageResult(final Image aboutUsImage) {
+    class ReturnBestOfImages implements ReturnListOfImages {
 
-        // Log response
-        Timber.i("About us image: %s", aboutUsImage.toString());
+        /**
+         * Send response through Otto bus.
+         *
+         * @param mainImages list of images on the main page.
+         */
+        public void returnMainImagesResult(final ArrayList<Image> mainImages) {
 
-        // TODO refactor that
-        // Get a handler that can be used to post to the main thread
-        Handler mainHandler = new Handler(context.getMainLooper());
-
-        Runnable myRunnable = new Runnable() {
-            @Override
-            public void run() {
-
-                bus.post(aboutUsImage);
+            // Log response
+            Timber.i("Main images: ");
+            for (Image image :
+                    mainImages) {
+                Timber.i(image.toString());
             }
-        };
-        mainHandler.post(myRunnable);
+
+            //final MainImagesResult mainImagesResult = new MainImagesResult();
+            //mainImagesResult.setMainImages(mainImages);
+
+            // TODO refactor that
+            // Get a handler that can be used to post to the main thread
+            final Handler mainHandler = new Handler(context.getMainLooper());
+            Runnable myRunnable = new Runnable() {
+                @Override
+                public void run() {
+
+                    bus.post(mainImages);
+                }
+            };
+            mainHandler.post(myRunnable);
+        }
     }
 
 }

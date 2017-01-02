@@ -15,8 +15,10 @@ import com.etiennelawlor.imagegallery.library.activities.FullScreenImageGalleryA
 import com.etiennelawlor.imagegallery.library.adapters.ImageGalleryAdapter;
 import com.etiennelawlor.imagegallery.library.utilities.DisplayUtility;
 import com.rivancic.aluna.R;
+import com.rivancic.aluna.adapters.AlunaImageGalleryAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by etiennelawlor on 6/10/16.
@@ -40,6 +42,7 @@ public class CustomImageGalleryFragment extends Fragment implements ImageGallery
     private String title;
    // private GridSpacesItemDecoration gridSpacesItemDecoration;
     private static ImageGalleryAdapter.ImageThumbnailLoader imageThumbnailLoader;
+    private AlunaImageGalleryAdapter imageGalleryAdapter;
     // endregion
 
     // region Constructors
@@ -71,7 +74,11 @@ public class CustomImageGalleryFragment extends Fragment implements ImageGallery
             images = getArguments().getStringArrayList(KEY_IMAGES);
             title = getArguments().getString(KEY_TITLE);
         }
+    }
 
+    public void addImages(List<String> images) {
+
+        imageGalleryAdapter.addImages(images);
     }
 
     @Override
@@ -107,7 +114,7 @@ public class CustomImageGalleryFragment extends Fragment implements ImageGallery
         setUpRecyclerView();
     }
 
-    // region ImageGalleryAdapter.OnImageClickListener Methods
+    // region AlunaImageGalleryAdapter.OnImageClickListener Methods
     @Override
     public void onImageClick(int position) {
         Intent intent = new Intent(getContext(), FullScreenImageGalleryActivity.class);
@@ -120,7 +127,7 @@ public class CustomImageGalleryFragment extends Fragment implements ImageGallery
     }
     // endregion
 
-    // region ImageGalleryAdapter.ImageThumbnailLoader Methods
+    // region AlunaImageGalleryAdapter.ImageThumbnailLoader Methods
     @Override
     public void loadImageThumbnail(ImageView iv, String imageUrl, int dimension) {
         imageThumbnailLoader.loadImageThumbnail(iv, imageUrl, dimension);
@@ -144,7 +151,9 @@ public class CustomImageGalleryFragment extends Fragment implements ImageGallery
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numOfColumns));
       //  gridSpacesItemDecoration = new GridSpacesItemDecoration(ImageGalleryUtils.dp2px(getActivity(), 2), numOfColumns);
        // recyclerView.addItemDecoration(gridSpacesItemDecoration);
-        ImageGalleryAdapter imageGalleryAdapter = new ImageGalleryAdapter(getContext(), images);
+
+
+        imageGalleryAdapter = new AlunaImageGalleryAdapter(getContext(), images);
         imageGalleryAdapter.setOnImageClickListener(this);
         imageGalleryAdapter.setImageThumbnailLoader(this);
 

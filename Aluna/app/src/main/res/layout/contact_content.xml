@@ -35,7 +35,7 @@
             android:layout_marginTop="@dimen/dimen_8"
             android:hint="Your name (required)">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/contact_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             android:layout_marginTop="@dimen/dimen_8"
             android:hint="Your e-mail (required)">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/contact_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:layout_marginTop="@dimen/dimen_8"
             android:hint="Your phone number">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/contact_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             android:layout_marginTop="@dimen/dimen_8"
             android:hint="Date">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/contact_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
             android:layout_marginTop="@dimen/dimen_8"
             android:hint="Your message (Required)">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/contact_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

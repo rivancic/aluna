@@ -1,23 +1,19 @@
-package com.rivancic.aluna.activities;
+package com.rivancic.aluna.activities.main;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.bumptech.glide.Glide;
 import com.mxn.soul.slidingcard_core.ContainerView;
-import com.mxn.soul.slidingcard_core.SlidingCard;
 import com.rivancic.aluna.R;
+import com.rivancic.aluna.activities.BaseActivity;
+import com.rivancic.aluna.messages.MainImagesResult;
 import com.rivancic.aluna.models.Image;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import timber.log.Timber;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * TODO Instead of text Aluna Weddings show Aluna Weddings logo in ActionBar.
@@ -29,9 +25,10 @@ public class MainActivity extends BaseActivity {
     private OnMainImageResponseReceivedListener onMainImageResponseReceived;
     private ContainerView mainSlider;
     private boolean isRestarted = false;
-    private ArrayList<Image> mainImages;
+   // private ArrayList<Image> mainImages = new ArrayList<>();
     private ProgressBar progressBar;
     private static final String IMAGES = "IMAGES";
+    private MainSliderContainer mainSliderContainer = new MainSliderContainer(this);
 
     private void initializeMainFunctionality() {
 
@@ -40,43 +37,17 @@ public class MainActivity extends BaseActivity {
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
     }
 
-    class MainSliderContainer implements ContainerView.ContainerInterface {
-
-        private List<Image> images;
-
-        public MainSliderContainer(List<Image> images) {
-
-            this.images = images;
-        }
-
-        @Override
-        public void initCard(SlidingCard card, int index) {
-
-            ImageView sliderIv = (ImageView) card.findViewById(R.id.main_image_slider_iv);
-            Image image = images.get(index);
-            Glide.with(MainActivity.this).load(image.getUrl()).override(1000, 1000).fitCenter().into(sliderIv);
-        }
-
-        @Override
-        public void exChangeCard() {
-
-            Image item = images.get(0);
-            images.remove(0);
-            images.add(item);
-        }
-    }
-
     /**
      * Display images in image slider
      */
     class OnMainImageResponseReceivedListener {
 
         @Subscribe
-        public void getMainImages(ArrayList<Image> mainImages) {
+        public void getMainImages(MainImagesResult mainImages) {
 
-            MainActivity.this.mainImages = mainImages;
+           // MainActivity.this.mainImages.addAll(mainImages.getMainImages());
             Timber.i("Main images handled in main activity.");
-            initCardSlider(mainImages);
+            addImagesToCartSlider(mainImages.getMainImages());
             progressBar.setVisibility(View.GONE);
         }
     }
@@ -84,21 +55,28 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
 
-        outState.putSerializable(IMAGES, mainImages);
+        outState.putSerializable(IMAGES, mainSliderContainer.getImages());
         super.onSaveInstanceState(outState);
     }
 
     private void initCardSlider(ArrayList<Image> mainImages) {
 
-        mainSlider.initCardView(new MainSliderContainer(mainImages),
+        mainSliderContainer = new MainSliderContainer(this, mainImages);
+        mainSlider.initCardView(mainSliderContainer,
                 R.layout.main_image_slider_item,
                 R.id.sliding_card_content_view);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
+    private void addImagesToCartSlider(ArrayList<Image> mainImages) {
 
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+        boolean load = false;
+        if(mainSliderContainer.isEmpty()) {
+            load = true;
+        }
+        mainSliderContainer.addImages(mainImages);
+        if(load) {
+            mainSlider.initCardView(mainSliderContainer, R.layout.main_image_slider_item, R.id.sliding_card_content_view);
+        }
     }
 
     @Override
@@ -109,9 +87,11 @@ public class MainActivity extends BaseActivity {
         initializeMainFunctionality();
         if (savedInstanceState != null) {
             isRestarted = true;
-            mainImages = (ArrayList<Image>) savedInstanceState.getSerializable(IMAGES);
+            ArrayList<Image> mainImages = (ArrayList<Image>) savedInstanceState.getSerializable(IMAGES);
             if(mainImages != null) {
                 initCardSlider(mainImages);
+            } else {
+                initCardSlider(new ArrayList<Image>());
             }
         }
         Timber.i("onCreate");

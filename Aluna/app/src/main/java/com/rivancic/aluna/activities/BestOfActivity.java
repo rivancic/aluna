@@ -1,9 +1,10 @@
 package com.rivancic.aluna.activities;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
@@ -19,7 +20,6 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 
 import timber.log.Timber;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * TODO Make the ActionBar in this activity dark as it shows photos.
@@ -28,8 +28,8 @@ public class BestOfActivity extends BaseActivity {
 
     private OnMainImageResponseReceivedListener onMainImageResponseReceived;
     private CustomImageGalleryFragment fragment;
-    ArrayList<Image> mainImages;
     boolean isRestarted = false;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class BestOfActivity extends BaseActivity {
         contentView = R.layout.best_of_activity;
         super.onCreate(savedInstanceState);
         initializeMainFunctionality();
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         getSupportFragmentManager().findFragmentById(android.R.id.content);
         ThumbnailImageLoader thumbnailImageLoader = new ThumbnailImageLoader();
         FullImageLoader fullImageLoader = new FullImageLoader();
@@ -45,6 +46,7 @@ public class BestOfActivity extends BaseActivity {
         FullScreenImageGalleryActivity.setFullScreenImageLoader(fullImageLoader);
         if(savedInstanceState!= null){
             isRestarted = true;
+            progressBar.setVisibility(View.GONE);
         }
     }
 
@@ -57,13 +59,11 @@ public class BestOfActivity extends BaseActivity {
     protected void onRestart() {
 
         super.onRestart();
+        progressBar.setVisibility(View.GONE);
         isRestarted = true;
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
     @Override
     protected void onStart() {
@@ -96,12 +96,12 @@ public class BestOfActivity extends BaseActivity {
         public void getMainImages(ArrayList<Image> mainImages) {
 
             populateImages(mainImages);
+            progressBar.setVisibility(View.GONE);
         }
     }
 
     private void populateImages(ArrayList<Image> mainImages) {
 
-        BestOfActivity.this.mainImages = mainImages;
         ArrayList<String> imageURLs = new ArrayList<>();
         for (Image image :
                 mainImages) {
@@ -120,6 +120,7 @@ public class BestOfActivity extends BaseActivity {
                     .replace(R.id.image_gallery, fragment, "")
                     .commit();
         } else {
+            fragment.addImages(imageURLs);
             getSupportFragmentManager()
                     .beginTransaction()
                     .attach(fragment)

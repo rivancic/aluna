@@ -8,7 +8,7 @@ public interface AlunaRepository {
 
     void getMainPictures();
 
-    void getAboutUsImage();
+   // void getAboutUsImage();
 
     void getBestOfImages();
 

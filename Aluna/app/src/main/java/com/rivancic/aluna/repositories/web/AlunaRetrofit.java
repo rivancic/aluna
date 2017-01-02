@@ -37,13 +37,15 @@ public class AlunaRetrofit {
         service = retrofit.create(GitHubService.class);
     }
 
-    public List<Image> getImageSlideshow(String imagesSlideshowUrl) throws IOException {
+    public ArrayList<Image> getImageSlideshow(String imagesSlideshowUrl, ReturnListOfImages alunaWebRepository) throws IOException {
 
-        final List<Image> images = new ArrayList<>();
+        final ArrayList<Image> images = new ArrayList<>();
         NextSlideshow nextSlideshow = new NextSlideshow();
         nextSlideshow.nextLink = imagesSlideshowUrl;
         do {
-            nextSlideshow = getSlideshowPart(images, nextSlideshow.nextLink);
+            ArrayList<Image> images1 = new ArrayList<>();
+            nextSlideshow = getSlideshowPart(images1, nextSlideshow.nextLink);
+            alunaWebRepository.returnMainImagesResult(images1);
         } while (nextSlideshow.hasNext);
         return images;
     }

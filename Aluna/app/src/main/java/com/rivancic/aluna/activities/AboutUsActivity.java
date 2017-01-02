@@ -1,7 +1,9 @@
 package com.rivancic.aluna.activities;
 
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 
 import com.rivancic.aluna.R;
 import com.rivancic.aluna.messages.AboutUsPageContentResult;
@@ -15,6 +17,7 @@ import timber.log.Timber;
 public class AboutUsActivity extends BaseActivity {
 
     WebView webView;
+    private ProgressBar progressBar;
     OnAboutUsPageReceivedListener aboutUsPageReceivedListener = new OnAboutUsPageReceivedListener();
 
     @Override
@@ -29,6 +32,7 @@ public class AboutUsActivity extends BaseActivity {
 
         webView = (WebView) findViewById(R.id.about_us);
         alunaRepository.getAboutUsPageContent();
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
     }
 
     @Override
@@ -55,6 +59,7 @@ public class AboutUsActivity extends BaseActivity {
 
             Timber.i("About us page content received in about us activity.");
             webView.loadData(aboutUsPageContentResult.aboutUsPageContent,  "text/html; charset=utf-8", "UTF-8");
+            progressBar.setVisibility(View.GONE);
         }
     }
 }
