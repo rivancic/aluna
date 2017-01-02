@@ -88,10 +88,20 @@ public class JsoupParser {
     public String parseAboutUsPage(Document doc) {
 
         String aboutUsPage = "";
+
+        // Remove menu
         Elements aboutUsImageElements = doc.select(".pp-layout-entity.pp-block.block-logo-menu");
         aboutUsImageElements.remove();
         aboutUsImageElements = doc.select(".pp-tile.slideout-menu-toggle.slideout-menu-graphic");
         aboutUsImageElements.remove();
+
+        // Remove footer
+        aboutUsImageElements = doc.select("#copyright-footer");
+        aboutUsImageElements.remove();
+        aboutUsImageElements = doc.select(".pp-layout-entity.pp-block.block-base-footer");
+        aboutUsImageElements.remove();
+
+        // Return result
         aboutUsPage = doc.toString();
         return aboutUsPage;
     }
